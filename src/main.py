@@ -60,7 +60,7 @@ print(Tensor.all_bond)
 
 un_array = random_unitary(4, 3)
 print(un_array[3])
-mat = np.mat(un_array)
+mat = np.matrix(un_array)
 print(un_array)
 print(mat, "\n")
 print(np.matmul(mat.H, mat), '\n')
