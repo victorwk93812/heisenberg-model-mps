@@ -7,11 +7,11 @@ mkShell {
         (pkgs.python3.withPackages (python-pkgs: with python-pkgs; [
 # select Python packages here
             numpy
-            # scipy
+            scipy
             # pandas
             # pyqt5
             # pyqt6
-            # matplotlib
+            matplotlib
             # uncertainties
             venvShellHook
         ]))
