@@ -1,5 +1,7 @@
+import math
 import numpy as np
 from scipy.sparse.linalg import eigsh
+from scipy.linalg import qr, rq
 from dmrg_utils import random_unitary, Tensor
 from dmrg_exceptions import *
 
@@ -59,11 +61,91 @@ def MPO_hsnbg_init(g, J, N):
     MPO[N - 1] = Tensor([[np.eye(2)], [sz], [-g * sx]])
     return MPO
 
-def sweep_left(MPS, MPO, MPSh, pre, suf):
-    return 0
+def sweep_left(MPS, MPO, MPSh, pre, suf) -> complex:
+    # Update each MPS(h) site with local GS
+    for i in range(0, N - 1):
+        # Calc. Heff matrix
+        Heff = Tensor.einsum(
+                'mai,abjn,bcko,pcl->ijklmnop', 
+                pre[N - 2 - i], MPO[N - 2 - i], 
+                MPO[N - 1 - i], suf[i]).value # Effective Ham. ndarray
+        sh = Heff.shape # (i, j, k, l, m, n, o, p)
+        matsh = (math.prod(sh[:4]), math.prod(sh[4:]))
+        Heff = Heff.reshape(matsh)
 
-def sweep_right(MPS, MPO, MPSh, pre, suf):
-    return 0
+        # Find local GS and GSE
+        eigvals, eigvecs = eigsh(Heff, k=1, which='SA') # smallest eigval. 
+        print(f"Heff local GSE on left sweep site {i} update: {eigvals[0]}")
+
+        # SVD(RQ here) 
+        lvbdim, lpbdim, rpbdim, rvbdim = sh[4:8] # merged MPS site dim
+        eigvec = eigvecs.reshape((lvbdim * lpbdim, rpbdim * rvbdim)) # before svd/qr/rq dec.
+        lsite, rsite = rq(eigvec, mode='economic')
+
+        # Truncation & update MPS(h)
+        truncdim = MPS[N - 1 - i].shape[0] # truncated vbond dim after svd/qr/rq
+        # print(f"Sweep {i} dims:", lvbdim, lpbdim, truncdim, rpbdim, rvbdim)
+        rsite = rsite[:truncdim, :].reshape((truncdim, rpbdim, rvbdim)) # trunc. rows
+        MPS[N - 1 - i] = Tensor(rsite)
+        MPSh[N - 1 - i] = Tensor.conjugate(MPS[N - 1 - i])
+        lsite = lsite[:, :truncdim].reshape((lvbdim, lpbdim, truncdim)) # trunc. cols. 
+        MPS[N - 2 - i] = Tensor(lsite)
+        MPSh[N - 2 - i] = Tensor.conjugate(MPS[N - 2 - i])
+
+        # Calc. R_{i+1} (suf[i + 1])
+        suf[i + 1] = Tensor.einsum('abc,ida,jbed,kec->ijk', 
+                                   suf[i], MPS[N - 1 - i], MPO[N - 1 - i], MPSh[N - 1 - i])
+        # print(suf[i + 1].shape)
+        print(f"MPS site {N - i} shape: {MPS[N - 1 - i].shape}")
+
+    # Calculate GS energy
+    suf[N] = Tensor.einsum('abc,ida,jbed,kec->ijk', 
+                               suf[N - 1], MPS[0], MPO[0], MPSh[0])
+    E = complex(Tensor.einsum('iii->', suf[N]).value)
+    return E
+
+def sweep_right(MPS, MPO, MPSh, pre, suf) -> complex:
+    # Update each MPS(h) site with local GS
+    for i in range(0, N - 1):
+        # Calc. Heff matrix
+        Heff = Tensor.einsum(
+                'mai,abjn,bcko,pcl->ijklmnop', 
+                pre[i], MPO[i], 
+                MPO[i + 1], suf[N - 2 - i]).value # Effective Ham. ndarray
+        sh = Heff.shape # (i, j, k, l, m, n, o, p)
+        matsh = (math.prod(sh[:4]), math.prod(sh[4:]))
+        Heff = Heff.reshape(matsh)
+
+        # Find local GS and GSE
+        eigvals, eigvecs = eigsh(Heff, k=1, which='SA') # smallest eigval. 
+        print(f"Heff local GSE on left sweep site {i} update: {eigvals[0]}")
+
+        # SVD(QR here) 
+        lvbdim, lpbdim, rpbdim, rvbdim = sh[4:8] # merged MPS site dim
+        eigvec = eigvecs.reshape((lvbdim * lpbdim, rpbdim * rvbdim)) # before svd/qr/rq dec.
+        lsite, rsite = qr(eigvec, mode='economic')
+
+        # Truncation & update MPS(h)
+        truncdim = MPS[i + 1].shape[0] # truncated vbond dim after svd/qr/rq
+        # print(f"Sweep {i} dims:", lvbdim, lpbdim, truncdim, rpbdim, rvbdim)
+        rsite = rsite[:truncdim, :].reshape((truncdim, rpbdim, rvbdim)) # trunc. rows
+        MPS[i + 1] = Tensor(rsite)
+        MPSh[i + 1] = Tensor.conjugate(MPS[i + 1])
+        lsite = lsite[:, :truncdim].reshape((lvbdim, lpbdim, truncdim)) # trunc. cols. 
+        MPS[i] = Tensor(lsite)
+        MPSh[i] = Tensor.conjugate(MPS[i])
+
+        # Calc. L_{i+1} (pre[i + 1])
+        suf[i + 1] = Tensor.einsum('abc,adi,bjed,cek->ijk', 
+                                   pre[i], MPS[i], MPO[i], MPSh[i])
+        # print(pre[i + 1].shape)
+        print(f"MPS site {i + 1} shape: {MPS[i].shape}")
+
+    # Calculate GS energy
+    pre[N] = Tensor.einsum('abc,adi,bjed,cek->ijk', 
+                               pre[N - 1], MPS[N - 1], MPO[N - 1], MPSh[N - 1])
+    E = complex(Tensor.einsum('iii->', pre[N]).value)
+    return E
 
 # Initialize random left-cnc MPS and MPS conj-trans(MPSh)
 # MPS, MPSh are 0-based
@@ -86,17 +168,23 @@ MPO = MPO_hsnbg_init(g, J, N)
 pre, suf = [0] * (N + 1), [0] * (N + 1)
 pre[0], suf[0] = Tensor([[[1]]]), Tensor([[[1]]])
 for i in range(1, N + 1):
-    pre[i] = Tensor.einsum('abc,adi,bjed,cek->ijk', pre[i - 1], MPS[i - 1], MPO[i - 1], MPSh[i - 1])
-E0 = Tensor.einsum('iii->', pre[N]).value
-print(f"E0: {E0}", type(E0))
+    pre[i] = Tensor.einsum('abc,adi,bjed,cek->ijk', 
+                           pre[i - 1], MPS[i - 1], MPO[i - 1], MPSh[i - 1])
+    # print(MPS[i - 1].shape)
+E0 = complex(Tensor.einsum('iii->', pre[N]).value)
+print(f"Energy before sweeping: {E0}\n")
 
 # t routines: sweep left -> right -> calc E
 El, Er = [], [] # energy after left, right sweeping
 for i in range(t):
+    print(f"===Sweep left {i + 1} start===")
     El.append(sweep_left(MPS, MPO, MPSh, pre, suf))
+    print(f"===Sweep left {i + 2} end===\n")
+    print(f"Energy after left sweep {i + 1}: {El[i].real:.4f}{'+' if El[i].imag >= 0 else ''}{El[i].imag:.4f}j\n")
+    print(f"===Sweep right {i + 1} start===")
     Er.append(sweep_right(MPS, MPO, MPSh, pre, suf))
-    print("Energy after left sweep {i}: {El[i]}")
-    print("Energy after right sweep {i}: {Er[i]}")
+    print(f"===Sweep right {i + 1} end===\n")
+    print(f"Energy after right sweep {i + 1}: {Er[i].real:.4f}{'+' if Er[i].imag >= 0 else ''}{Er[i].imag:.4f}j\n")
 
 # Tensor class tests
 # print("===tensor class test===")
