@@ -1,147 +1,211 @@
-Energy before sweeping: (0.21450477298810003+2.220446049250313e-16j)
+Energy before sweeping: (-0.5426794347272788+3.885780586188048e-16j)
+
+===Identity debug start===
+MPS id: 140737342409152
+MPSh id: 140737342411008
+MPO id: 140731636008320
+pre id: 140731636008256
+suf id: 140731636008384
+===Identity debug end===
 
 ===Sweep left 1 start===
-Heff local GSE on left sweep site 0 update: -3.3686835649684976
+===Identity debug start===
+MPS id: 140737342409152
+MPSh id: 140737342411008
+MPO id: 140731636008320
+pre id: 140731636008256
+suf id: 140731636008384
+===Identity debug end===
+
+Heff local GSE on left sweep site 0 update: -3.2952487994503405
 MPS site 10 shape: [2 2 1]
-Heff local GSE on left sweep site 1 update: -5.115744396820261
+Heff local GSE on left sweep site 1 update: -5.064609624749888
 MPS site 9 shape: [4 2 2]
-Heff local GSE on left sweep site 2 update: -7.758737551705551
+Heff local GSE on left sweep site 2 update: -8.191854628839414
 MPS site 8 shape: [8 2 4]
-Heff local GSE on left sweep site 3 update: -10.031500865275715
+Heff local GSE on left sweep site 3 update: -12.381489999654743
 MPS site 7 shape: [16  2  8]
-Heff local GSE on left sweep site 4 update: -12.381489999654761
-MPS site 6 shape: [16  2 16]
-Heff local GSE on left sweep site 5 update: -7.402387775620448
-MPS site 5 shape: [16  2 16]
-Heff local GSE on left sweep site 6 update: -7.4023877756204275
+Heff local GSE on left sweep site 4 update: -12.381489999654743
+MPS site 6 shape: [32  2 16]
+Heff local GSE on left sweep site 5 update: -12.381489999654725
+MPS site 5 shape: [16  2 32]
+Heff local GSE on left sweep site 6 update: -12.381489999654784
 MPS site 4 shape: [ 8  2 16]
-Heff local GSE on left sweep site 7 update: -7.402387775620436
+Heff local GSE on left sweep site 7 update: -12.38148999965476
 MPS site 3 shape: [4 2 8]
-Heff local GSE on left sweep site 8 update: -7.402387775620432
-MPS site 2 shape: [2 2 4]
-===Sweep left 1 end===
-
-Energy after left sweep 1: -7.4024-0.0000j
-
-===Sweep right 1 start===
-Heff local GSE on left sweep site 0 update: -7.402387775620433
-MPS site 1 shape: [1 2 2]
-Heff local GSE on left sweep site 1 update: -7.402387775620432
-MPS site 2 shape: [2 2 4]
-Heff local GSE on left sweep site 2 update: -7.402387775620412
-MPS site 3 shape: [4 2 8]
-Heff local GSE on left sweep site 3 update: -7.4023877756204435
-MPS site 4 shape: [ 8  2 16]
-Heff local GSE on left sweep site 4 update: -33.788290573072786
-MPS site 5 shape: [16  2 16]
-Heff local GSE on left sweep site 5 update: -23.051773231108697
-MPS site 6 shape: [16  2 16]
-Heff local GSE on left sweep site 6 update: -12.745135850551687
-MPS site 7 shape: [16  2  8]
-Heff local GSE on left sweep site 7 update: -3.2760504004538626
-MPS site 8 shape: [8 2 4]
-Heff local GSE on left sweep site 8 update: -3.3686835649684874
-MPS site 9 shape: [4 2 2]
-===Sweep right 1 end===
-
-Energy after right sweep 1: -0.8262+0.0000j
-
-===Sweep left 2 start===
-Heff local GSE on left sweep site 0 update: -3.368683564968491
-MPS site 10 shape: [2 2 1]
-Heff local GSE on left sweep site 1 update: -5.115744396820262
-MPS site 9 shape: [4 2 2]
-Heff local GSE on left sweep site 2 update: -7.758737551705614
-MPS site 8 shape: [8 2 4]
-Heff local GSE on left sweep site 3 update: -10.031500865275737
-MPS site 7 shape: [16  2  8]
-Heff local GSE on left sweep site 4 update: -12.381489999654727
-MPS site 6 shape: [16  2 16]
-Heff local GSE on left sweep site 5 update: -7.4023877703247685
-MPS site 5 shape: [16  2 16]
-Heff local GSE on left sweep site 6 update: -7.402387770324787
-MPS site 4 shape: [ 8  2 16]
-Heff local GSE on left sweep site 7 update: -7.402387770324781
-MPS site 3 shape: [4 2 8]
-Heff local GSE on left sweep site 8 update: -7.402387770324768
+Heff local GSE on left sweep site 8 update: -12.38148999965478
 MPS site 2 shape: [2 2 4]
 ===Sweep left 2 end===
 
-Energy after left sweep 2: -7.4024-0.0000j
+Energy after left sweep 1: -12.3815+0.0000j
+Left sweep 1 spent 0.6686 s
 
-===Sweep right 2 start===
-Heff local GSE on left sweep site 0 update: -7.402387770324795
+===Sweep right 1 start===
+===Identity debug start===
+MPS id: 140737342409152
+MPSh id: 140737342411008
+MPO id: 140731636008320
+pre id: 140731636008256
+suf id: 140731636008384
+===Identity debug end===
+
+Heff local GSE on left sweep site 0 update: -12.38148999965474
 MPS site 1 shape: [1 2 2]
-Heff local GSE on left sweep site 1 update: -7.402387770324776
+Heff local GSE on left sweep site 1 update: -12.381489999654741
 MPS site 2 shape: [2 2 4]
-Heff local GSE on left sweep site 2 update: -7.4023877703247605
+Heff local GSE on left sweep site 2 update: -12.381489999654756
 MPS site 3 shape: [4 2 8]
-Heff local GSE on left sweep site 3 update: -7.402387770324766
+Heff local GSE on left sweep site 3 update: -12.38148999965479
 MPS site 4 shape: [ 8  2 16]
-Heff local GSE on left sweep site 4 update: -33.788290573072686
-MPS site 5 shape: [16  2 16]
-Heff local GSE on left sweep site 5 update: -23.051773231108637
-MPS site 6 shape: [16  2 16]
-Heff local GSE on left sweep site 6 update: -12.745135850551678
+Heff local GSE on left sweep site 4 update: -33.788290573072764
+MPS site 5 shape: [16  2 32]
+Heff local GSE on left sweep site 5 update: -28.997658571694657
+MPS site 6 shape: [32  2 16]
+Heff local GSE on left sweep site 6 update: -11.742124216370948
 MPS site 7 shape: [16  2  8]
-Heff local GSE on left sweep site 7 update: -3.276050400453858
+Heff local GSE on left sweep site 7 update: -3.3189884574283264
 MPS site 8 shape: [8 2 4]
-Heff local GSE on left sweep site 8 update: -3.368683564968494
+Heff local GSE on left sweep site 8 update: -3.2952487994503468
 MPS site 9 shape: [4 2 2]
-===Sweep right 2 end===
+===Sweep right 1 end===
 
-Energy after right sweep 2: -0.8262+0.0000j
+Energy after right sweep 1: -1.0494+0.0000j
+Right sweep 1 spent 1.0203 s
 
-===Sweep left 3 start===
-Heff local GSE on left sweep site 0 update: -3.3686835649685034
+===Sweep left 2 start===
+===Identity debug start===
+MPS id: 140737342409152
+MPSh id: 140737342411008
+MPO id: 140731636008320
+pre id: 140731636008256
+suf id: 140731636008384
+===Identity debug end===
+
+Heff local GSE on left sweep site 0 update: -3.2952487994503343
 MPS site 10 shape: [2 2 1]
-Heff local GSE on left sweep site 1 update: -5.11574439682027
+Heff local GSE on left sweep site 1 update: -5.064609624749893
 MPS site 9 shape: [4 2 2]
-Heff local GSE on left sweep site 2 update: -7.758737551705577
+Heff local GSE on left sweep site 2 update: -8.19185462883943
 MPS site 8 shape: [8 2 4]
-Heff local GSE on left sweep site 3 update: -10.031500865275786
+Heff local GSE on left sweep site 3 update: -12.381489999654768
 MPS site 7 shape: [16  2  8]
-Heff local GSE on left sweep site 4 update: -12.38148999965475
-MPS site 6 shape: [16  2 16]
-Heff local GSE on left sweep site 5 update: -7.40238777510709
-MPS site 5 shape: [16  2 16]
-Heff local GSE on left sweep site 6 update: -7.4023877751071
+Heff local GSE on left sweep site 4 update: -12.381489999654741
+MPS site 6 shape: [32  2 16]
+Heff local GSE on left sweep site 5 update: -12.381489999654773
+MPS site 5 shape: [16  2 32]
+Heff local GSE on left sweep site 6 update: -12.38148999965474
 MPS site 4 shape: [ 8  2 16]
-Heff local GSE on left sweep site 7 update: -7.4023877751070986
+Heff local GSE on left sweep site 7 update: -12.381489999654807
 MPS site 3 shape: [4 2 8]
-Heff local GSE on left sweep site 8 update: -7.402387775107119
+Heff local GSE on left sweep site 8 update: -12.381489999654756
 MPS site 2 shape: [2 2 4]
 ===Sweep left 3 end===
 
-Energy after left sweep 3: -7.4024-0.0000j
+Energy after left sweep 2: -12.3815-0.0000j
+Left sweep 2 spent 0.5559 s
+
+===Sweep right 2 start===
+===Identity debug start===
+MPS id: 140737342409152
+MPSh id: 140737342411008
+MPO id: 140731636008320
+pre id: 140731636008256
+suf id: 140731636008384
+===Identity debug end===
+
+Heff local GSE on left sweep site 0 update: -12.381489999654764
+MPS site 1 shape: [1 2 2]
+Heff local GSE on left sweep site 1 update: -12.38148999965471
+MPS site 2 shape: [2 2 4]
+Heff local GSE on left sweep site 2 update: -12.381489999654736
+MPS site 3 shape: [4 2 8]
+Heff local GSE on left sweep site 3 update: -12.381489999654754
+MPS site 4 shape: [ 8  2 16]
+Heff local GSE on left sweep site 4 update: -33.78829057307288
+MPS site 5 shape: [16  2 32]
+Heff local GSE on left sweep site 5 update: -28.997658571694622
+MPS site 6 shape: [32  2 16]
+Heff local GSE on left sweep site 6 update: -11.742124216371028
+MPS site 7 shape: [16  2  8]
+Heff local GSE on left sweep site 7 update: -3.318988457428332
+MPS site 8 shape: [8 2 4]
+Heff local GSE on left sweep site 8 update: -3.2952487994503477
+MPS site 9 shape: [4 2 2]
+===Sweep right 2 end===
+
+Energy after right sweep 2: -0.7706+0.0000j
+Right sweep 2 spent 1.6528 s
+
+===Sweep left 3 start===
+===Identity debug start===
+MPS id: 140737342409152
+MPSh id: 140737342411008
+MPO id: 140731636008320
+pre id: 140731636008256
+suf id: 140731636008384
+===Identity debug end===
+
+Heff local GSE on left sweep site 0 update: -3.2952487994503454
+MPS site 10 shape: [2 2 1]
+Heff local GSE on left sweep site 1 update: -5.064609624749868
+MPS site 9 shape: [4 2 2]
+Heff local GSE on left sweep site 2 update: -8.191854628839463
+MPS site 8 shape: [8 2 4]
+Heff local GSE on left sweep site 3 update: -12.381489999654802
+MPS site 7 shape: [16  2  8]
+Heff local GSE on left sweep site 4 update: -12.381489999654763
+MPS site 6 shape: [32  2 16]
+Heff local GSE on left sweep site 5 update: -12.381489999654791
+MPS site 5 shape: [16  2 32]
+Heff local GSE on left sweep site 6 update: -12.381489999654786
+MPS site 4 shape: [ 8  2 16]
+Heff local GSE on left sweep site 7 update: -12.381489999654752
+MPS site 3 shape: [4 2 8]
+Heff local GSE on left sweep site 8 update: -12.381489999654793
+MPS site 2 shape: [2 2 4]
+===Sweep left 4 end===
+
+Energy after left sweep 3: -12.3815+0.0000j
+Left sweep 3 spent 1.0382 s
 
 ===Sweep right 3 start===
-Heff local GSE on left sweep site 0 update: -7.402387775107095
+===Identity debug start===
+MPS id: 140737342409152
+MPSh id: 140737342411008
+MPO id: 140731636008320
+pre id: 140731636008256
+suf id: 140731636008384
+===Identity debug end===
+
+Heff local GSE on left sweep site 0 update: -12.3814899996548
 MPS site 1 shape: [1 2 2]
-Heff local GSE on left sweep site 1 update: -7.402387775107128
+Heff local GSE on left sweep site 1 update: -12.381489999654749
 MPS site 2 shape: [2 2 4]
-Heff local GSE on left sweep site 2 update: -7.402387775107081
+Heff local GSE on left sweep site 2 update: -12.381489999654745
 MPS site 3 shape: [4 2 8]
-Heff local GSE on left sweep site 3 update: -7.40238777510709
+Heff local GSE on left sweep site 3 update: -12.381489999654782
 MPS site 4 shape: [ 8  2 16]
-Heff local GSE on left sweep site 4 update: -33.7882905730728
-MPS site 5 shape: [16  2 16]
-Heff local GSE on left sweep site 5 update: -23.051773231108776
-MPS site 6 shape: [16  2 16]
-Heff local GSE on left sweep site 6 update: -12.745135850551721
+Heff local GSE on left sweep site 4 update: -33.78829057307262
+MPS site 5 shape: [16  2 32]
+Heff local GSE on left sweep site 5 update: -28.997658571694597
+MPS site 6 shape: [32  2 16]
+Heff local GSE on left sweep site 6 update: -11.742124216370975
 MPS site 7 shape: [16  2  8]
-Heff local GSE on left sweep site 7 update: -3.2760504004538573
+Heff local GSE on left sweep site 7 update: -3.318988457428314
 MPS site 8 shape: [8 2 4]
-Heff local GSE on left sweep site 8 update: -3.368683564968493
+Heff local GSE on left sweep site 8 update: -3.295248799450344
 MPS site 9 shape: [4 2 2]
 ===Sweep right 3 end===
 
-Energy after right sweep 3: -0.8262+0.0000j
+Energy after right sweep 3: -1.0494+0.0000j
+Right sweep 3 spent 1.1423 s
 
+[(-1.0494294665527444+1.9789657230410806e-16j), (-0.7706064864792961+8.644643634860759e-17j), (-1.0494294665527442+1.9789657230410806e-16j)]
+[(-12.38148999965476+5.940577431209876e-17j), (-12.381489999654757-9.006474346552391e-17j), (-12.381489999654784+1.0169053037663626e-16j)]
 ===MPS unitarity test===
  Tensor value: [[1]] 
 Tensor shape: [1 1] 
 Tensor size: 1
- Tensor value: [[1.+2.76268561e-17j]] 
+ Tensor value: [[1.-5.46064878e-17j]] 
 Tensor shape: [1 1] 
 Tensor size: 1

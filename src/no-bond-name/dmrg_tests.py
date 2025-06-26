@@ -1,0 +1,73 @@
+import dmrg_utils
+
+# Tensor class tests
+# print("===tensor class test===")
+# a = Tensor(np.arange(36).reshape(6, 2, 3))
+# a.reshape([3, 2, 6])
+# a.transpose((2, 0, 1))
+# print(f"a:\n{a}")
+# print(f"repr(a):\n{repr(a)}")
+# print(f"type(a):\n{type(a)}")
+# a = a[:4, :, :]
+# print(f"a:\n{a}")
+# print(f"repr(a):\n{repr(a)}")
+# print(f"type(a):\n{type(a)}")
+# b = Tensor([])
+# print(f"b:\n{b}")
+# print(f"repr(b):\n{repr(b)}")
+# print(f"type(b):\n{type(b)}")
+# c = Tensor(np.arange(24).reshape(4, 6))
+# tq, tr = Tensor.qr(c)
+# print(f"tq:\n{tq}")
+# print(f"repr(tq):\n{repr(tq)}")
+# print(f"type(tq):\n{type(tq)}")
+# print(f"tr:\n{tr}")
+# print(f"repr(tr):\n{repr(tr)}")
+# print(f"type(tr):\n{type(tr)}")
+# Tensor class tests #2
+# a = Tensor(np.arange(6).reshape(3, 2))
+# b = Tensor(np.arange(12).reshape(4, 3))
+# c = Tensor.einsum('ki, jk->ij', a, b)
+# print(f"c:\n{c}")
+# print(f"repr(c):\n{repr(c)}")
+# print(f"type(c):\n{type(c)}")
+
+# random_unitary tests
+# print("===random unitary test===")
+# un_array = random_unitary(2, 1)
+# print(un_array, un_array.shape)
+# mat = np.matrix(un_array)
+# print(un_array)
+# print(mat, "\n")
+# print(np.matmul(mat.H, mat), '\n')
+# print(np.matmul(mat, mat.H), '\n')
+
+# conjugate test
+# print("===conjugate test===")
+# a = Tensor(np.eye(2) + 1j * np.eye(2))
+# print(f"a:\n{a}")
+# print(f"repr(a):\n{repr(a)}")
+# print(f"type(a):\n{type(a)}")
+# b = Tensor.conjugate(a)
+# print(f"b:\n{b}")
+# print(f"repr(b):\n{repr(b)}")
+# print(f"type(b):\n{type(b)}")
+
+# svd test
+# print("===SVD test===")
+# a = Tensor([[3, 2, 2], [2, 3, -2]])
+# u, s, vh = Tensor.full_svd(a)
+# print(f"a:\n{a}")
+# print(f"repr(a):\n{repr(a)}")
+# print(f"type(a):\n{type(a)}")
+# print(f"u:\n{u}")
+# print(f"repr(u):\n{repr(u)}")
+# print(f"type(u):\n{type(u)}")
+# print(f"s:\n{s}")
+# print(f"repr(s):\n{repr(s)}")
+# print(f"type(s):\n{type(s)}")
+# print(f"vh:\n{vh}")
+# print(f"repr(vh):\n{repr(vh)}")
+# print(f"type(vh):\n{type(vh)}")
+
+

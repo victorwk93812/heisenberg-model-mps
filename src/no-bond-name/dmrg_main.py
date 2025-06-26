@@ -1,12 +1,12 @@
 import math
+import time
 import numpy as np
 from scipy.sparse.linalg import eigsh
 from scipy.linalg import qr, rq
 from dmrg_utils import random_unitary, Tensor
-from dmrg_exceptions import *
 
 N = 10
-D = 16
+D = 64 
 d = 2
 g = 1
 J = -1
@@ -62,6 +62,15 @@ def MPO_hsnbg_init(g, J, N):
     return MPO
 
 def sweep_left(MPS, MPO, MPSh, pre, suf) -> complex:
+    # Identity debug
+    print(f"===Identity debug start===")
+    print(f"MPS id: {id(MPS)}")
+    print(f"MPSh id: {id(MPSh)}")
+    print(f"MPO id: {id(MPO)}")
+    print(f"pre id: {id(pre)}")
+    print(f"suf id: {id(suf)}")
+    print(f"===Identity debug end===\n")
+
     # Update each MPS(h) site with local GS
     for i in range(0, N - 1):
         # Calc. Heff matrix
@@ -105,6 +114,15 @@ def sweep_left(MPS, MPO, MPSh, pre, suf) -> complex:
     return E
 
 def sweep_right(MPS, MPO, MPSh, pre, suf) -> complex:
+    # Identity debug
+    print(f"===Identity debug start===")
+    print(f"MPS id: {id(MPS)}")
+    print(f"MPSh id: {id(MPSh)}")
+    print(f"MPO id: {id(MPO)}")
+    print(f"pre id: {id(pre)}")
+    print(f"suf id: {id(suf)}")
+    print(f"===Identity debug end===\n")
+
     # Update each MPS(h) site with local GS
     for i in range(0, N - 1):
         # Calc. Heff matrix
@@ -152,17 +170,11 @@ def sweep_right(MPS, MPO, MPSh, pre, suf) -> complex:
 # Bond order in MPS[i].shape: lv, p, rv
 # Bond order in MPSh[i].shape: lv, p, rv
 MPS, MPSh = MPS_rand_init(d, D, N) 
-# print(MPS[0], '\n')
-# print(MPS[4].shape, '\n')
-# print(MPS[9], '\n')
 
 # Initialize MPO
 # Bond order in MPO[i].shape: lv, rv, dp, up
 # MPO is 0-based
 MPO = MPO_hsnbg_init(g, J, N)
-# print(MPO[0])
-# print(MPO[1])
-# print(MPO[N - 1])
 
 # Calc pre[i] (L_i) & declare suf[i] (R_i)
 pre, suf = [0] * (N + 1), [0] * (N + 1)
@@ -176,85 +188,38 @@ print(f"Energy before sweeping: {E0}\n")
 
 # t routines: sweep left -> right -> calc E
 El, Er = [], [] # energy after left, right sweeping
+print(f"===Identity debug start===")
+print(f"MPS id: {id(MPS)}")
+print(f"MPSh id: {id(MPSh)}")
+print(f"MPO id: {id(MPO)}")
+print(f"pre id: {id(pre)}")
+print(f"suf id: {id(suf)}")
+print(f"===Identity debug end===\n")
+
 for i in range(t):
     print(f"===Sweep left {i + 1} start===")
+    ti = time.perf_counter()
     El.append(sweep_left(MPS, MPO, MPSh, pre, suf))
+    tf = time.perf_counter()
     print(f"===Sweep left {i + 2} end===\n")
-    print(f"Energy after left sweep {i + 1}: {El[i].real:.4f}{'+' if El[i].imag >= 0 else ''}{El[i].imag:.4f}j\n")
+    print(f"Energy after left sweep {i + 1}: {El[i].real:.4f}{'+' if El[i].imag >= 0 else ''}{El[i].imag:.4f}j")
+    print(f"Left sweep {i + 1} spent {tf - ti:.4f} s\n")
     print(f"===Sweep right {i + 1} start===")
+    ti = time.perf_counter()
     Er.append(sweep_right(MPS, MPO, MPSh, pre, suf))
+    tf = time.perf_counter()
     print(f"===Sweep right {i + 1} end===\n")
-    print(f"Energy after right sweep {i + 1}: {Er[i].real:.4f}{'+' if Er[i].imag >= 0 else ''}{Er[i].imag:.4f}j\n")
+    print(f"Energy after right sweep {i + 1}: {Er[i].real:.4f}{'+' if Er[i].imag >= 0 else ''}{Er[i].imag:.4f}j")
+    print(f"Right sweep {i + 1} spent {tf - ti:.4f} s\n")
 
-# Tensor class tests
-# print("===tensor class test===")
-# a = Tensor(np.arange(36).reshape(6, 2, 3))
-# a.reshape([3, 2, 6])
-# a.transpose((2, 0, 1))
-# print(f"a:\n{a}")
-# print(f"repr(a):\n{repr(a)}")
-# print(f"type(a):\n{type(a)}")
-# a = a[:4, :, :]
-# print(f"a:\n{a}")
-# print(f"repr(a):\n{repr(a)}")
-# print(f"type(a):\n{type(a)}")
-# b = Tensor([])
-# print(f"b:\n{b}")
-# print(f"repr(b):\n{repr(b)}")
-# print(f"type(b):\n{type(b)}")
-# c = Tensor(np.arange(24).reshape(4, 6))
-# tq, tr = Tensor.qr(c)
-# print(f"tq:\n{tq}")
-# print(f"repr(tq):\n{repr(tq)}")
-# print(f"type(tq):\n{type(tq)}")
-# print(f"tr:\n{tr}")
-# print(f"repr(tr):\n{repr(tr)}")
-# print(f"type(tr):\n{type(tr)}")
-# Tensor class tests #2
-# a = Tensor(np.arange(6).reshape(3, 2))
-# b = Tensor(np.arange(12).reshape(4, 3))
-# c = Tensor.einsum('ki, jk->ij', a, b)
-# print(f"c:\n{c}")
-# print(f"repr(c):\n{repr(c)}")
-# print(f"type(c):\n{type(c)}")
+print(Er)
+print(El)
 
-# random_unitary tests
-# print("===random unitary test===")
-# un_array = random_unitary(2, 1)
-# print(un_array, un_array.shape)
-# mat = np.matrix(un_array)
-# print(un_array)
-# print(mat, "\n")
-# print(np.matmul(mat.H, mat), '\n')
-# print(np.matmul(mat, mat.H), '\n')
 
-# conjugate test
-# print("===conjugate test===")
-# a = Tensor(np.eye(2) + 1j * np.eye(2))
-# print(f"a:\n{a}")
-# print(f"repr(a):\n{repr(a)}")
-# print(f"type(a):\n{type(a)}")
-# b = Tensor.conjugate(a)
-# print(f"b:\n{b}")
-# print(f"repr(b):\n{repr(b)}")
-# print(f"type(b):\n{type(b)}")
 
-# svd test
-# print("===SVD test===")
-# a = Tensor([[3, 2, 2], [2, 3, -2]])
-# u, s, vh = Tensor.full_svd(a)
-# print(f"a:\n{a}")
-# print(f"repr(a):\n{repr(a)}")
-# print(f"type(a):\n{type(a)}")
-# print(f"u:\n{u}")
-# print(f"repr(u):\n{repr(u)}")
-# print(f"type(u):\n{type(u)}")
-# print(f"s:\n{s}")
-# print(f"repr(s):\n{repr(s)}")
-# print(f"type(s):\n{type(s)}")
-# print(f"vh:\n{vh}")
-# print(f"repr(vh):\n{repr(vh)}")
-# print(f"type(vh):\n{type(vh)}")
+
+
+
 
 # MPS unitarity test
 print("===MPS unitarity test===")
