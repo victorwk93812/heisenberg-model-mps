@@ -5,6 +5,8 @@ from scipy.sparse.linalg import eigsh
 from scipy.linalg import qr, rq
 from dmrg_utils import random_unitary, Tensor
 
+import time
+
 N = 10
 D = 64 
 d = 2
@@ -196,6 +198,7 @@ print(f"pre id: {id(pre)}")
 print(f"suf id: {id(suf)}")
 print(f"===Identity debug end===\n")
 
+start_time = time.time()
 for i in range(t):
     print(f"===Sweep left {i + 1} start===")
     ti = time.perf_counter()
@@ -211,6 +214,7 @@ for i in range(t):
     print(f"===Sweep right {i + 1} end===\n")
     print(f"Energy after right sweep {i + 1}: {Er[i].real:.4f}{'+' if Er[i].imag >= 0 else ''}{Er[i].imag:.4f}j")
     print(f"Right sweep {i + 1} spent {tf - ti:.4f} s\n")
+print(f"Used time: {time.time()-start_time}")
 
 print(Er)
 print(El)
