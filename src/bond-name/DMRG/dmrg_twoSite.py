@@ -9,7 +9,7 @@ from rich.progress import track
 
 N = 20
 d: Final[int] = 2
-D = 32
+D = 40
 J = 1
 g = 1
 sweep_times = 3
@@ -72,12 +72,20 @@ S_p = np.array([[0, 1], [0, 0]])
 S_m = np.array([[0, 0], [1, 0]])
 
 W = np.array([
-        I  , O  , O,
-        Z  , O  , O,
-        g*X, J*Z, I
-    ]).reshape(3, 3, 2, 2)
+    [1, 0, 0, 1], [0, 0, 0, 0], [0, 0, 0, 0],
+    [1, 0, 0, -1], [0, 0, 0, 0], [0, 0, 0, 0],
+    [0, g, g, 0], [J, 0, 0, -J], [1, 0, 0, 1]
+]).reshape(3, 3, d, d)
 w0 = np.tensordot(np.array([0, 0, 1]), W, axes=([0], [0]))
 wN = np.tensordot(W, np.array([1, 0, 0]), axes=([1], [0])) # N-1
+# W = np.array([
+#         I  , O    , O    , O,
+#         S_m, O    , O    , O,
+#         S_p, O    , O    , O,
+#         O  , 2*S_p, 2*S_m, I
+#     ]).reshape(4, 4, d, d)
+# w0 = np.tensordot(np.array([0, 0, 0, 1]), W, axes=([0], [0]))
+# wN = np.tensordot(W, np.array([1, 0, 0, 0]), axes=([1], [0])) # N-1
 def init_MPO() -> List[Tensor]:
     MPO: List[Tensor] = []
     MPO.append(Tensor(['b1', 's0', 's0p'], w0))
@@ -98,7 +106,7 @@ def init_MPOsq() -> List[Tensor]:
     temp2 = Tensor([f'b{N-1}p', '_a', f's{N-1}p'], wN)
     MPO_SQ.append(temp1 * temp2)
     return MPO_SQ
-def init_LR(MPS, MPO, MPS_DAG) -> List[List[Tensor], List[Tensor]]:
+def init_LR(MPS, MPO, MPS_DAG) -> Tuple[List[Tensor], List[Tensor]]:
     L_stack: List[Tensor] = []
     L_init_cursor = MPS[0]
     L_init_cursor = L_init_cursor * MPO[0]
@@ -182,7 +190,8 @@ def main():
             elif sweep_cursor == 0:
                 u, s, vh = eigen_state.svd(combine_bonds=[f's{sweep_cursor}'],
                                         type="first",
-                                        vh_new_bond_name=f'a{sweep_cursor+1}')
+                                        vh_new_bond_name=f'a{sweep_cursor+1}',
+                                        dim_cutoff=D)
                 MPS[sweep_cursor+1] = vh
                 MPS_DAG[sweep_cursor+1] = MPS[sweep_cursor+1].conj()
                 MPS[sweep_cursor] = u * s
@@ -190,7 +199,8 @@ def main():
             else:
                 u, s, vh = eigen_state.svd(combine_bonds=[f'a{sweep_cursor}', f's{sweep_cursor}'],
                                         type="first",
-                                        vh_new_bond_name=f'a{sweep_cursor+1}')
+                                        vh_new_bond_name=f'a{sweep_cursor+1}',
+                                        dim_cutoff=D)
                 MPS[sweep_cursor+1] = vh
                 MPS_DAG[sweep_cursor+1] = MPS[sweep_cursor+1].conj()
                 MPS[sweep_cursor] = u * s
@@ -236,7 +246,8 @@ def main():
             elif sweep_cursor == N - 1:
                 u, s, vh = eigen_state.svd(combine_bonds=[f's{sweep_cursor}'],
                                         type="second",
-                                        u_new_bond_name=f'a{sweep_cursor}')
+                                        u_new_bond_name=f'a{sweep_cursor}',
+                                        dim_cutoff=D)
                 MPS[sweep_cursor-1] = u
                 MPS_DAG[sweep_cursor-1] = MPS[sweep_cursor-1].conj()
                 MPS[sweep_cursor] = s * vh
@@ -244,7 +255,8 @@ def main():
             else:
                 u, s, vh = eigen_state.svd(combine_bonds=[f's{sweep_cursor}', f'a{sweep_cursor+1}'],
                                         type="second",
-                                        u_new_bond_name=f'a{sweep_cursor}')
+                                        u_new_bond_name=f'a{sweep_cursor}',
+                                        dim_cutoff=D)
                 MPS[sweep_cursor-1] = u
                 MPS_DAG[sweep_cursor-1] = MPS[sweep_cursor-1].conj()
                 MPS[sweep_cursor] = s * vh
@@ -272,7 +284,7 @@ def main():
                 print(f"Round: {int(i / N / 2) + 1}\n"
                 f"Energy: {energy_list[-1]}\n"
                 f"Variance: {var_list[-1]}")
-                
+
     print("Final Result\n"
             f"Energy per Site: {energy_list[-1]}\n"
             f"Variance: {var_list[-1]}")

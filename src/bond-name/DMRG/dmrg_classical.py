@@ -11,7 +11,7 @@ N = 20
 d: Final[int] = 2
 D = 64
 J = 1
-g = 1
+g = 0.1
 sweep_times = 3
 target_var = -100
 
