@@ -1,6 +1,7 @@
 import math
 import time
 import numpy as np
+from numpy.linalg import svd
 from scipy.sparse.linalg import eigsh
 from scipy.linalg import qr, rq
 from dmrg_utils import random_unitary, Tensor
@@ -8,15 +9,15 @@ from dmrg_utils import random_unitary, Tensor
 import time
 
 N = 10
-D = 64 
+D = 16 
 d = 2
-g = 1
+g = 0
 J = -1
 id2 = np.array([[1, 0], [0, 1]])
 sx = np.array([[0, 1], [1, 0]])
 sy = np.array([[0, -1j], [1j, 0]])
 sz = np.array([[1, 0], [0, -1]])
-t = 3
+t = 5
 
 def MPS_rand_init(d: int, D: int, N: int):
     MPS, MPSh = [0] * N, [0] * N
@@ -88,10 +89,12 @@ def sweep_left(MPS, MPO, MPSh, pre, suf) -> complex:
         eigvals, eigvecs = eigsh(Heff, k=1, which='SA') # smallest eigval. 
         print(f"Heff local GSE on left sweep site {i} update: {eigvals[0]}")
 
-        # SVD(RQ here) 
+        # SVD
         lvbdim, lpbdim, rpbdim, rvbdim = sh[4:8] # merged MPS site dim
         eigvec = eigvecs.reshape((lvbdim * lpbdim, rpbdim * rvbdim)) # before svd/qr/rq dec.
-        lsite, rsite = rq(eigvec, mode='economic')
+        # lsite, rsite = rq(eigvec, mode='economic')
+        U, S, Vh = svd(eigvec, full_matrices = False)
+        lsite, rsite = U @ np.diag(S), Vh
 
         # Truncation & update MPS(h)
         truncdim = MPS[N - 1 - i].shape[0] # truncated vbond dim after svd/qr/rq
@@ -132,18 +135,20 @@ def sweep_right(MPS, MPO, MPSh, pre, suf) -> complex:
                 'mai,abjn,bcko,pcl->ijklmnop', 
                 pre[i], MPO[i], 
                 MPO[i + 1], suf[N - 2 - i]).value # Effective Ham. ndarray
-        sh = Heff.shape # (i, j, k, l, m, n, o, p)
-        matsh = (math.prod(sh[:4]), math.prod(sh[4:]))
-        Heff = Heff.reshape(matsh)
+        sh = Heff.shape # (i, j, k, l, m, n, o, p) 
+        matsh = (math.prod(sh[:4]), math.prod(sh[4:])) 
+        Heff = Heff.reshape(matsh) 
 
         # Find local GS and GSE
         eigvals, eigvecs = eigsh(Heff, k=1, which='SA') # smallest eigval. 
         print(f"Heff local GSE on left sweep site {i} update: {eigvals[0]}")
 
-        # SVD(QR here) 
+        # SVD
         lvbdim, lpbdim, rpbdim, rvbdim = sh[4:8] # merged MPS site dim
         eigvec = eigvecs.reshape((lvbdim * lpbdim, rpbdim * rvbdim)) # before svd/qr/rq dec.
-        lsite, rsite = qr(eigvec, mode='economic')
+        # lsite, rsite = qr(eigvec, mode='economic')
+        U, S, Vh = svd(eigvec, full_matrices = False)
+        lsite, rsite = U, np.diag(S) @ Vh
 
         # Truncation & update MPS(h)
         truncdim = MPS[i + 1].shape[0] # truncated vbond dim after svd/qr/rq
